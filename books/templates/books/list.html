@@ -1,0 +1,59 @@
+{% extends "core/base.html" %}
+
+{% block title %}Мои карточки{% endblock %}
+
+{% block content %}
+
+<h3 class="mb-4">Активные карточки</h3>
+
+<div class="row">
+    {% for card in active_book_cards %}
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>{{ card.title }}</h5>
+                    <p class="text-muted">{{ card.author }}</p>
+
+                    <p><strong>Статус:</strong> {{ card.get_status_display }}</p>
+
+                    <a href="{% url 'books:detail' card.pk %}" class="btn btn-sm btn-outline-primary">
+                        Подробнее
+                    </a>
+
+                    <a href="{% url 'books:delete' card.pk %}" class="btn btn-sm btn-danger">
+                        Удалить
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>Нет карточек</p>
+    {% endfor %}
+</div>
+
+<hr>
+
+<h3 class="mb-4">Архив</h3>
+
+<div class="row">
+    {% for card in archived_book_cards %}
+        <div class="col-md-4 mb-3">
+            <div class="card border-secondary">
+                <div class="card-body">
+                    <h5>{{ card.title }}</h5>
+                    <p class="text-muted">{{ card.author }}</p>
+
+                    <p><strong>Статус:</strong> {{ card.get_status_display }}</p>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>Архив пуст</p>
+    {% endfor %}
+</div>
+
+<a href="{% url 'books:create' %}" class="btn btn-primary mt-3">
+    Создать карточку
+</a>
+
+{% endblock %}

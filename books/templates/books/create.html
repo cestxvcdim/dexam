@@ -1,0 +1,28 @@
+{% extends "core/base.html" %}
+
+{% block title %}Создать карточку{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <h3 class="mb-4 text-center">Новая карточка</h3>
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <button class="btn btn-success w-100">
+                        Создать
+                    </button>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
