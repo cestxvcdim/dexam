@@ -9,7 +9,7 @@ class BookCardForm(StyleFormMixin, forms.ModelForm):
         fields = [
             "author",
             "title",
-            "book_type",
+            "action_type",
             "publisher",
             "year",
             "binding",
@@ -17,7 +17,7 @@ class BookCardForm(StyleFormMixin, forms.ModelForm):
         ]
 
         widgets = {
-            "book_type": forms.Select,
+            "action_type": forms.RadioSelect,
             "binding": forms.Select,
             "condition": forms.Select,
         }

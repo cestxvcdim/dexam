@@ -7,5 +7,5 @@ from books.models import BookCard
 class BookCardAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "author", "user", "created_at")
     search_fields = ("title", "author", "publisher", "year")
-    list_filter = ("title", "author", "publisher", "year", "book_type", "binding", "condition")
+    list_filter = ("title", "author", "publisher", "year", "action_type", "binding", "condition")
     paginate_by = 10

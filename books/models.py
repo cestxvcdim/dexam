@@ -9,7 +9,7 @@ class BookCard(models.Model):
         REJECTED = "rejected", "Отклонено"
         ARCHIVED = "archived", "Архив"
 
-    class BookType(models.TextChoices):
+    class ActionType(models.TextChoices):
         GIVE = "give", "Готов поделиться"
         WANT = "want", "Хочу в свою библиотеку"
 
@@ -30,23 +30,24 @@ class BookCard(models.Model):
         related_name="book_cards",
     )
 
-    author = models.CharField(max_length=128)
-    title = models.CharField(max_length=128)
+    author = models.CharField(verbose_name="Автор", max_length=128)
+    title = models.CharField(verbose_name="Название", max_length=128)
 
-    book_type = models.CharField(max_length=10, choices=BookType.choices)
+    action_type = models.CharField(verbose_name="Выберите пункт", max_length=10, choices=ActionType.choices)
 
-    publisher = models.CharField(max_length=128, blank=True)
-    year = models.PositiveIntegerField(null=True, blank=True)
-    binding = models.CharField(max_length=10, choices=Binding.choices, blank=True)
-    condition = models.CharField(max_length=20, choices=Condition.choices, blank=True)
+    publisher = models.CharField(verbose_name="Издательство", max_length=128, blank=True)
+    year = models.PositiveIntegerField(verbose_name="Год издания", null=True, blank=True)
+    binding = models.CharField(verbose_name="Переплет", max_length=10, choices=Binding.choices)
+    condition = models.CharField(verbose_name="Состояние книги", max_length=20, choices=Condition.choices)
 
     status = models.CharField(
+        verbose_name="Статус",
         max_length=10,
         choices=Status.choices,
         default=Status.PENDING
     )
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(verbose_name="Время создания", auto_now_add=True)
 
     class Meta:
         verbose_name = "Карточка книги"

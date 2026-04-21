@@ -16,5 +16,9 @@ class StyleFormMixin:
                     format='%Y-%m-%d %H:%M:%S'
                 )
                 field.input_formats = ['%Y-%m-%d %H:%M:%S']
+            elif isinstance(field.widget, forms.RadioSelect):
+                field.widget.attrs.update({'class': 'form-check_input'})
+            elif isinstance(field.widget, forms.Select):
+                field.widget.attrs.update({'class': 'form-select'})
             else:
                 field.widget.attrs.update({'class': 'form-control'})

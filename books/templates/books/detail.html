@@ -14,7 +14,7 @@
 
                 <hr>
 
-                <p><strong>Тип:</strong> {{ book_card.get_book_type_display }}</p>
+                <p><strong>Действие:</strong> {{ book_card.get_action_type_display }}</p>
                 <p><strong>Статус:</strong> {{ book_card.get_status_display }}</p>
 
                 {% if book_card.publisher %}
@@ -25,13 +25,8 @@
                     <p><strong>Год:</strong> {{ book_card.year }}</p>
                 {% endif %}
 
-                {% if book_card.binding %}
-                    <p><strong>Переплет:</strong> {{ book_card.get_binding_display }}</p>
-                {% endif %}
-
-                {% if book_card.condition %}
-                    <p><strong>Состояние:</strong> {{ book_card.get_condition_display }}</p>
-                {% endif %}
+                <p><strong>Переплет:</strong> {{ book_card.get_binding_display }}</p>
+                <p><strong>Состояние:</strong> {{ book_card.get_condition_display }}</p>
 
                 <hr>
 
