@@ -140,8 +140,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
 
+LOGIN_URL = "users:login"
 LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/login/"
+LOGOUT_REDIRECT_URL = "users:login"
 
 SUPERUSER_USERNAME = os.getenv("SUPERUSER_USERNAME")
 SUPERUSER_PASSWORD = os.getenv("SUPERUSER_PASSWORD")

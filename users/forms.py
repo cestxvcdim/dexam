@@ -23,9 +23,15 @@ class RegisterForm(StyleFormMixin, UserCreationForm):
     def clean_ru_login(self):
         ru_login = self.cleaned_data.get("ru_login")
 
+        # ФИО pattern - r"^[А-Яа-яЁё\s]+$"
+
         if not re.match(r"^[А-Яа-яЁё0-9]+$", ru_login):
             raise ValidationError(
                 "Логин должен содержать только кириллицу и цифры."
+            )
+        if len(ru_login) < 6:
+            raise ValidationError(
+                "Логин должен содержать не менее 6 символов."
             )
 
         return ru_login
@@ -34,8 +40,11 @@ class RegisterForm(StyleFormMixin, UserCreationForm):
         phone = self.cleaned_data.get("phone")
         phone = phone.replace(" ", "")
 
-        pattern = r"^\+7\(\d{3}\)-\d{3}-\d{2}-\d{2}$"
-        if not re.match(pattern, phone):
+        # +7(XXX)-XXX-XX-XX
+        pattern7 = r"^\+7\(\d{3}\)-\d{3}-\d{2}-\d{2}$"
+        # 8(XXX)XXX-XX-XX
+        pattern8 = r"^8\(\d{3}\)\d{3}-\d{2}-\d{2}$"
+        if not re.match(pattern7, phone):
             raise ValidationError(
                 "Телефон должен быть в формате +7(XXX)-XXX-XX-XX."
             )

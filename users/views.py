@@ -14,3 +14,8 @@ class UserLoginView(LoginView):
     authentication_form = LoginForm
     template_name = "users/login.html"
     success_url = "/"
+
+    def get_success_url(self):
+        if self.request.user.is_staff:
+            return reverse_lazy("books:admin_panel")
+        return super().get_success_url()

@@ -1,9 +1,13 @@
+from django.views import View
 from django.views.generic import CreateView, ListView, DetailView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
 
 from books.models import BookCard
-from books.forms import BookCardForm
+from books.forms import BookCardForm, BookCardStatusForm
+from books.mixins import StaffRequiredMixin
 
 
 class BookCardCreateView(LoginRequiredMixin, CreateView):
@@ -28,8 +32,8 @@ class BookCardListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["active_book_cards"] = self.get_queryset().exclude(
-            status__in=("rejected", "archived"),
+        context["active_book_cards"] = self.get_queryset().filter(
+            status__in=("pending", "approved"),
         )
         context["archived_book_cards"] = self.get_queryset().filter(
             status__in=("rejected", "archived"),
@@ -43,7 +47,10 @@ class BookCardDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     context_object_name = "book_card"
 
     def test_func(self):
-        return self.request.user.is_superuser or self.get_object().user == self.request.user
+        return (
+            self.request.user.is_staff
+            or self.get_object().user == self.request.user
+        )
 
 
 class BookCardDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -52,4 +59,37 @@ class BookCardDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = reverse_lazy("books:list")
 
     def test_func(self):
-        return self.request.user.is_superuser or self.get_object().user == self.request.user
+        return (
+            self.request.user.is_staff
+            or self.get_object().user == self.request.user
+        )
+
+
+class AdminBookCardListView(StaffRequiredMixin, ListView):
+    model = BookCard
+    template_name = "books/admin_panel.html"
+    context_object_name = "book_cards"
+    paginate_by = 20
+
+    def get_queryset(self):
+        return BookCard.objects.select_related("user").order_by("-created_at")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["status_choices"] = BookCard.Status.choices
+        return context
+
+
+class AdminBookCardStatusUpdateView(StaffRequiredMixin, View):
+    def post(self, request, pk):
+        book_card = get_object_or_404(BookCard, pk=pk)
+        form = BookCardStatusForm(request.POST)
+
+        if form.is_valid():
+            book_card.status = form.cleaned_data["status"]
+            book_card.save(update_fields=["status"])
+            messages.success(request, f"Статус карточки «{book_card.title}» обновлён.")
+        else:
+            messages.error(request, "Некорректный статус.")
+
+        return redirect("books:admin_panel")
