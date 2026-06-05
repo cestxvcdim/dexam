@@ -4,10 +4,10 @@
 
 {% block content %}
 
-<h3 class="mb-4">Панель администратора</h3>
-<p class="text-muted mb-4">Все заявки пользователей</p>
+<h3 class="mb-4 bento-heading">Панель администратора</h3>
+<p class="text-muted mb-4 bento-subtext">Все заявки пользователей</p>
 
-<form method="get" class="row g-3 mb-4">
+<form method="get" class="row g-3 mb-4 bento-panel bento-panel--filters">
     <div class="col-md-4">
         <label class="form-label">Статус</label>
         <select name="status" class="form-select">
@@ -36,9 +36,9 @@
     </div>
 </form>
 
-<div class="table-responsive">
+<div class="table-responsive bento-table-wrap">
     <table class="table table-striped table-hover align-middle bg-white shadow-sm">
-        <thead class="table-dark">
+        <thead>
             <tr>
                 <th>#</th>
                 <th>Пользователь</th>

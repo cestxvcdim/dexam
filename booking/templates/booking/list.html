@@ -4,12 +4,12 @@
 
 {% block content %}
 
-<h3 class="mb-4">Мои заявки</h3>
+<h3 class="mb-4 bento-heading">Мои заявки</h3>
 
 <div class="row">
     {% for booking in active_bookings %}
         <div class="col-md-4 mb-3">
-            <div class="card shadow-sm">
+            <div class="card shadow-sm bento-card">
                 <div class="card-body">
                     <h5>{{ booking.get_room_display }}</h5>
                     <p class="text-muted">{{ booking.start_date|date:"d.m.Y" }}</p>
@@ -28,18 +28,18 @@
             </div>
         </div>
     {% empty %}
-        <p>Заявок пока нет</p>
+        <p class="bento-empty">Заявок пока нет</p>
     {% endfor %}
 </div>
 
 <hr>
 
-<h3 class="mb-4">Завершённые</h3>
+<h3 class="mb-4 bento-heading">Завершённые</h3>
 
 <div class="row">
     {% for booking in completed_bookings %}
         <div class="col-md-4 mb-3">
-            <div class="card border-secondary">
+            <div class="card border-secondary bento-card bento-card--muted">
                 <div class="card-body">
                     <h5>{{ booking.get_room_display }}</h5>
                     <p class="text-muted">{{ booking.start_date|date:"d.m.Y" }}</p>
@@ -53,7 +53,7 @@
             </div>
         </div>
     {% empty %}
-        <p>Завершённых заявок нет</p>
+        <p class="bento-empty">Завершённых заявок нет</p>
     {% endfor %}
 </div>
 

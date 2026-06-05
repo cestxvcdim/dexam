@@ -2,18 +2,20 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Конференции.РФ{% endblock %}</title>
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}">
 
     {% block extra_css %}{% endblock %}
 </head>
-<body class="bg-light d-flex flex-column min-vh-100">
+<body class="bento-body d-flex flex-column min-vh-100">
 
     {% include "core/includes/navbar.html" %}
 
-    <main class="container py-4 flex-grow-1">
+    <main class="container py-4 flex-grow-1 bento-main">
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
