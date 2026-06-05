@@ -9,11 +9,11 @@
         <div class="card shadow-sm border-danger">
             <div class="card-body text-center">
 
-                <h4 class="mb-3">Удалить карточку?</h4>
+                <h4 class="mb-3">Удалить заявку?</h4>
 
                 <p>
-                    <strong>{{ object.title }}</strong><br>
-                    {{ object.author }}
+                    <strong>{{ object.get_room_display }}</strong><br>
+                    {{ object.start_date|date:"d.m.Y" }}
                 </p>
 
                 <form method="post">
@@ -23,7 +23,7 @@
                         Да, удалить
                     </button>
 
-                    <a href="{% url 'books:detail' object.pk %}" class="btn btn-secondary">
+                    <a href="{% url 'booking:detail' object.pk %}" class="btn btn-secondary">
                         Отмена
                     </a>
                 </form>

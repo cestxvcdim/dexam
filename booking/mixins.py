@@ -13,5 +13,5 @@ class StaffRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def handle_no_permission(self):
         if self.request.user.is_authenticated:
             messages.error(self.request, "Доступ только для администраторов.")
-            return redirect("books:list")
+            return redirect("booking:list")
         return super().handle_no_permission()

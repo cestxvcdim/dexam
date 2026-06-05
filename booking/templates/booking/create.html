@@ -1,6 +1,6 @@
 {% extends "core/base.html" %}
 
-{% block title %}Создать карточку{% endblock %}
+{% block title %}Оформление заявки{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
@@ -9,14 +9,14 @@
         <div class="card shadow-sm">
             <div class="card-body">
 
-                <h3 class="mb-4 text-center">Новая карточка</h3>
+                <h3 class="mb-4 text-center">Новая заявка</h3>
 
                 <form method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
 
                     <button class="btn btn-success w-100">
-                        Создать
+                        Отправить заявку
                     </button>
                 </form>
 

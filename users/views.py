@@ -17,5 +17,5 @@ class UserLoginView(LoginView):
 
     def get_success_url(self):
         if self.request.user.is_staff:
-            return reverse_lazy("books:admin_panel")
+            return reverse_lazy("booking:admin_panel")
         return super().get_success_url()

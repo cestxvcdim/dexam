@@ -1,0 +1,49 @@
+{% extends "core/base.html" %}
+
+{% block title %}Заявка{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <h3>{{ booking.get_room_display }}</h3>
+                <p class="text-muted">{{ booking.start_date|date:"d.m.Y" }}</p>
+
+                <hr>
+
+                <p><strong>Статус:</strong> {{ booking.get_status_display }}</p>
+                <p><strong>Способ оплаты:</strong> {{ booking.get_payment_method_display }}</p>
+                <p><strong>Создана:</strong> {{ booking.created_at|date:"d.m.Y H:i" }}</p>
+
+                {% if review %}
+                    <hr>
+                    <p><strong>Отзыв:</strong></p>
+                    <p>{{ review.body }}</p>
+                {% elif review_form %}
+                    <hr>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ review_form.as_p }}
+                        <button type="submit" class="btn btn-primary">Сохранить отзыв</button>
+                    </form>
+                {% endif %}
+
+                <hr>
+
+                <a href="{% url 'booking:list' %}" class="btn btn-secondary">
+                    К списку
+                </a>
+
+                <a href="{% url 'booking:delete' booking.pk %}" class="btn btn-danger">
+                    Удалить
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

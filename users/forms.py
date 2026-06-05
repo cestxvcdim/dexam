@@ -1,81 +1,48 @@
-import re
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.core.exceptions import ValidationError
 
-from core.forms import StyleFormMixin
+from core.mixins import StyleFormMixin
+
 from users.models import User
+from users.validators import (
+    validate_full_name,
+    validate_phone,
+    validate_username,
+)
 
 
 class RegisterForm(StyleFormMixin, UserCreationForm):
     class Meta:
         model = User
         fields = (
-            "ru_login",
+            "username",
             "email",
             "phone",
-            "first_name",
-            "last_name",
+            "full_name",
             "password1",
             "password2",
         )
 
-    def clean_ru_login(self):
-        ru_login = self.cleaned_data.get("ru_login")
-
-        # ФИО pattern - r"^[А-Яа-яЁё\s]+$"
-
-        if not re.match(r"^[А-Яа-яЁё0-9]+$", ru_login):
-            raise ValidationError(
-                "Логин должен содержать только кириллицу и цифры."
-            )
-        if len(ru_login) < 6:
-            raise ValidationError(
-                "Логин должен содержать не менее 6 символов."
-            )
-
-        return ru_login
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        validate_username(username)
+        return username
 
     def clean_phone(self):
-        phone = self.cleaned_data.get("phone")
-        phone = phone.replace(" ", "")
-
-        # +7(XXX)-XXX-XX-XX
-        pattern7 = r"^\+7\(\d{3}\)-\d{3}-\d{2}-\d{2}$"
-        # 8(XXX)XXX-XX-XX
-        pattern8 = r"^8\(\d{3}\)\d{3}-\d{2}-\d{2}$"
-        if not re.match(pattern7, phone):
-            raise ValidationError(
-                "Телефон должен быть в формате +7(XXX)-XXX-XX-XX."
-            )
-
+        phone = self.cleaned_data.get("phone", "").replace(" ", "")
+        validate_phone(phone)
         return phone
+
+    def clean_full_name(self):
+        full_name = self.cleaned_data.get("full_name", "").strip()
+        validate_full_name(full_name)
+        return full_name
 
 
 class LoginForm(StyleFormMixin, AuthenticationForm):
     username = forms.CharField(label="Логин")
 
-    def clean(self):
-        from django.contrib.auth import authenticate
-
-        ru_login = self.cleaned_data.get("username")
-        password = self.cleaned_data.get("password")
-
-        if ru_login and password:
-            try:
-                user = User.objects.get(ru_login=ru_login)
-            except User.DoesNotExist:
-                raise ValidationError("Пользователь не найден")
-
-            self.user_cache = authenticate(
-                self.request,
-                username=user.username,
-                password=password
-            )
-
-            if self.user_cache is None:
-                raise ValidationError("Неверный пароль")
-
-            self.confirm_login_allowed(self.user_cache)
-
-        return self.cleaned_data
+    error_messages = {
+        "invalid_login": "Неверный логин или пароль.",
+        "inactive": "Учётная запись отключена.",
+    }

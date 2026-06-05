@@ -45,7 +45,7 @@ INSTALLED_APPS = [
 
     'core',
     'users',
-    'books',
+    'booking',
 ]
 
 MIDDLEWARE = [
@@ -124,6 +124,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+DATE_INPUT_FORMATS = ["%d.%m.%Y"]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -146,7 +147,5 @@ LOGOUT_REDIRECT_URL = "users:login"
 
 SUPERUSER_USERNAME = os.getenv("SUPERUSER_USERNAME")
 SUPERUSER_PASSWORD = os.getenv("SUPERUSER_PASSWORD")
-
-SUPERUSER_EMAIL= os.getenv("SUPERUSER_EMAIL")
-SUPERUSER_RU_LOGIN = os.getenv("SUPERUSER_RU_LOGIN")
+SUPERUSER_EMAIL = os.getenv("SUPERUSER_EMAIL")
 SUPERUSER_PHONE = os.getenv("SUPERUSER_PHONE")
